@@ -243,21 +243,5 @@ namespace Microwave.Test.Integration
 
             cookController.Received(1).Stop();
         }
-
-        [Test]
-        public void Cooking_CancelButton_LightCalled()
-        {
-            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetPower
-            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetTime
-            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in cooking
-
-            // Open door
-            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-
-            light.Received(1).TurnOff();
-        }
     }
 }
