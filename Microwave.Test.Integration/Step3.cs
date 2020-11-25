@@ -9,6 +9,7 @@ using NUnit.Framework;
 
 namespace Microwave.Test.Integration
 {
+    [TestFixture]
     public class Step3
     {
         private Light uut;
@@ -21,6 +22,7 @@ namespace Microwave.Test.Integration
             output = new Output();
             uut = new Light(output);
             str = new StringWriter();
+            Console.SetOut(str);
         }
 
         [Test]
@@ -36,21 +38,6 @@ namespace Microwave.Test.Integration
             uut.TurnOn();
             uut.TurnOff();
             Assert.That(str.ToString().Contains("Light is turned off"));
-        }
-
-        [Test]
-        public void TurnOn_WasOn_CorrectOutput()
-        {
-            uut.TurnOn();
-            uut.TurnOn();
-            Assert.That(str.ToString().IsNullOrEmpty());
-        }
-
-        [Test]
-        public void TurnOff_WasOff_CorrectOutput()
-        {
-            uut.TurnOff();
-            Assert.That(str.ToString().IsNullOrEmpty());
         }
     }
 }
