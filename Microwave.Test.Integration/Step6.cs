@@ -52,7 +52,7 @@ namespace Microwave.Test.Integration
         public void PowerButtonPress_UserInterfaceSubscribes_PowerTubeStarted()
         {
             uutPowerButton.Press();
-            Assert.That(str.ToString().Contains("PowerTube works with 50"));
+            Assert.That(str.ToString().Contains("Display shows: 50 W"));
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace Microwave.Test.Integration
         public void CancelButtonPress_UserInterfaceSubscribes_PowerTubeOff()
         {
             uutTimerButton.Press();
-            Assert.That(str.ToString().Contains("PowerTube turned off"));
+            Assert.That(str.ToString().Contains("Display cleared"));
         }
     }
 }
