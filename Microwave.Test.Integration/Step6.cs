@@ -94,17 +94,6 @@ namespace Microwave.Test.Integration
             Assert.That(str.ToString().Contains("PowerTube works with 50"));
         }
 
-        [Test]
-        public void PowerButtonPress3Times_SetTime_PowerTubeStarted()
-        {
-            uutPowerButton.Press();
-            uutPowerButton.Press();
-            uutPowerButton.Press();
-
-            uutTimerButton.Press();
-            uutStartCancelButton.Press();
-            Assert.That(str.ToString().Contains("PowerTube works with 150"));
-        }
 
         //Ext 1
         [Test]
@@ -115,7 +104,7 @@ namespace Microwave.Test.Integration
             Assert.That(str.ToString().Contains("Display cleared"));
         }
 
-        //Ext2
+        //Ext 2
         [Test]
         public void CancelButtonPress_UnderCooking_ClearDisplay()
         {
