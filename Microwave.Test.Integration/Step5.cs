@@ -136,67 +136,6 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void Ready_FullPower_cookControllerIsCalledCorrectly()
-        {
-            for (int i = 50; i <= 700; i += 50)
-            {
-                powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            }
-
-            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetTime
-
-            // Should call with correct values
-            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-
-            cookController.Received(1).StartCooking(700, 60);
-
-        }
-
-
-        [Test]
-        public void SetTime_StartButton_LightIsCalled()
-        {
-            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetPower
-            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetTime
-            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now cooking
-
-            light.Received(1).TurnOn();
-        }
-
-        [Test]
-        public void Cooking_CookingIsDone_LightOff()
-        {
-            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetPower
-            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetTime
-            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in cooking
-
-            uut.CookingIsDone();
-            light.Received(1).TurnOff();
-        }
-
-        [Test]
-        public void Cooking_CookingIsDone_ClearDisplay()
-        {
-            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetPower
-            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetTime
-            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in cooking
-
-            // Cooking is done
-            uut.CookingIsDone();
-            display.Received(1).Clear();
-        }
-
-        [Test]
         public void Cooking_DoorIsOpened_cookControllerCalled()
         {
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
@@ -209,7 +148,7 @@ namespace Microwave.Test.Integration
             // Open door
             door.Opened += Raise.EventWith(this, EventArgs.Empty);
 
-            cookController.Received(1).Stop();
+            Assert.That(str.ToString().Contains("PowerTube turned off"));
         }
 
         [Test]
