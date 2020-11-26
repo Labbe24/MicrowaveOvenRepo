@@ -1,14 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Microwave.Classes.Boundary;
+using Microwave.Classes.Controllers;
 using Microwave.Classes.Interfaces;
+using NSubstitute;
+using NUnit.Framework;
 
 namespace Microwave.Test.Integration
 {
     public class Step6
     {
-        private Button uut;                     // T
-        private IUserInterface userInterface;   // X
+        private Button uutPowerButton; // T
+        private Button uutTimerButton; // T
+        private Button uutCancelButton; // T
+        private Output output; // X
+        private Display display; // X
+        private Light light; // X
+        private PowerTube powerTube; // X
+        private Timer timer; // X
+        private CookController cookController; // X
+        private UserInterface userInterface; // X
+        private Door door; // S
+
+        private StringWriter str;
+
+        [SetUp]
+        public void Setup()
+        {
+            output = new Output();
+            display = new Display(output);
+            light = new Light(output);
+            powerTube = new PowerTube(output);
+            timer = Substitute.For<Timer>();
+            door = Substitute.For<Door>();
+
+            uutPowerButton = new Button();
+            uutTimerButton = new Button();
+            uutCancelButton = new Button();
+
+            cookController = new CookController(timer, display, powerTube);
+            userInterface = new UserInterface(uutPowerButton, uutTimerButton, uutCancelButton, door, display, light, cookController);
+            cookController.UI = userInterface;
+
+            str = new StringWriter();
+            Console.SetOut(str);
+        }
+
+        [Test]
+        public void PowerButtonPress_UserInterfaceSubscribes_PowerTubeStarted()
+        {
+            uutPowerButton.Press();
+            Assert.That(str.ToString().Contains("PowerTube works with 50"));
+        }
+
+        [Test]
+        public void TimerButtonPress_UserInterfaceSubscribes_ShowTime()
+        {
+            uutTimerButton.Press();
+            Assert.That(str.ToString().Contains("Display shows: 01:00"));
+        }
+
+        [Test]
+        public void CancelButtonPress_UserInterfaceSubscribes_PowerTubeOff()
+        {
+            uutTimerButton.Press();
+            Assert.That(str.ToString().Contains("PowerTube turned off"));
+        }
     }
 }
