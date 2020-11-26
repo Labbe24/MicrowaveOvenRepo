@@ -55,6 +55,14 @@ namespace Microwave.Test.Integration
             Assert.That(str.ToString().Contains("Display shows: 50 W"));
         }
 
+
+        [Test]
+        public void TimerButtonPress_AtStart_ShowTime()
+        {
+            uutTimerButton.Press();
+            Assert.That(str.ToString().Contains("Display shows: 01:00"));
+        }
+
         [Test]
         public void TimerButtonPress_DuringSetup_ShowTime()
         {
