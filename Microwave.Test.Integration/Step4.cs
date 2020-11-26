@@ -22,7 +22,6 @@ namespace Microwave.Test.Integration
 
         private StringWriter str;
 
-
         [SetUp]
         public void Setup()
         {
