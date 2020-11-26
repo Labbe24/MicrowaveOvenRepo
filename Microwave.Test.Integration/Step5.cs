@@ -124,6 +124,8 @@ namespace Microwave.Test.Integration
             // Now in SetPower
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
+            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty); // ERROR Frank made a mistake
+
             timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now in SetTime
             timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);

@@ -25,6 +25,7 @@ namespace Microwave.Test.Integration
         private ITimer timer; // S
         private Output output; // X
         private StringWriter str;
+
         [SetUp]
         public void Setup()
         {
@@ -49,14 +50,14 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void Open_1subscriber_LightTurnedOn()
+        public void Open_ReadyState_LightTurnedOn()
         {
             uut.Open();
             Assert.That(str.ToString().Contains("Light is turned on"));
         }
 
         [Test]
-        public void Close_1subscriber_LightTurnedOff()
+        public void Close_DoorOpenState_LightTurnedOff()
         {
             uut.Open();
             uut.Close();
