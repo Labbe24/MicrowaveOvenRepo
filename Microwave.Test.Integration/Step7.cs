@@ -62,5 +62,23 @@ namespace Microwave.Test.Integration
             uut.Close();
             Assert.That(str.ToString().Contains("Light is turned off"));
         }
+        
+        [Test]
+        public void Open_SetPowerState_DisplayCleared()
+        {
+            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            uut.Open();
+            Assert.That(str.ToString().Contains("Display cleared"));
+        }
+        
+        [Test]
+        public void Open_CookingState_PowerTubeTurnedOff()
+        {
+            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            uut.Open();
+            Assert.That(str.ToString().Contains("PowerTube turned off"));
+        }
     }
 }
