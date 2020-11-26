@@ -14,7 +14,7 @@ namespace Microwave.Test.Integration
     {
         private Button uutPowerButton; // T
         private Button uutTimerButton; // T
-        private Button uutCancelButton; // T
+        private Button uutStartCancelButton; // T
         private Output output; // X
         private Display display; // X
         private Light light; // X
@@ -38,10 +38,10 @@ namespace Microwave.Test.Integration
 
             uutPowerButton = new Button();
             uutTimerButton = new Button();
-            uutCancelButton = new Button();
+            uutStartCancelButton = new Button();
 
             cookController = new CookController(timer, display, powerTube);
-            userInterface = new UserInterface(uutPowerButton, uutTimerButton, uutCancelButton, door, display, light, cookController);
+            userInterface = new UserInterface(uutPowerButton, uutTimerButton, uutStartCancelButton, door, display, light, cookController);
             cookController.UI = userInterface;
 
             str = new StringWriter();
@@ -55,13 +55,15 @@ namespace Microwave.Test.Integration
             Assert.That(str.ToString().Contains("Display shows: 50 W"));
         }
 
+        
 
-        [Test]
-        public void TimerButtonPress_AtStart_ShowTime()
-        {
-            uutTimerButton.Press();
-            Assert.That(str.ToString().Contains("Display shows: 01:00"));
-        }
+
+        //[Test]
+        //public void TimerButtonPress_AtStart_ShowTime()
+        //{
+        //    uutTimerButton.Press();
+        //    Assert.That(str.ToString().Contains("Display shows: 01:00"));
+        //}
 
         [Test]
         public void TimerButtonPress_DuringSetup_ShowTime()
@@ -71,22 +73,57 @@ namespace Microwave.Test.Integration
             Assert.That(str.ToString().Contains("Display shows: 01:00"));
         }
 
+
+        [Test]
+        public void StartCancelButtonPress_SetTime_LightIsTurnOn()
+        {
+            uutPowerButton.Press();
+            uutTimerButton.Press();
+            uutStartCancelButton.Press();
+
+            Assert.That(str.ToString().Contains("Light is turned on"));
+        }
+
+        [Test]
+        public void StartCancelButtonPress_SetTime_TurnOnPowertube()
+        {
+            uutPowerButton.Press();
+            uutTimerButton.Press();
+            uutStartCancelButton.Press();
+
+            Assert.That(str.ToString().Contains("PowerTube works with 50"));
+        }
+
+        [Test]
+        public void PowerButtonPress3Times_SetTime_PowerTubeStarted()
+        {
+            uutPowerButton.Press();
+            uutPowerButton.Press();
+            uutPowerButton.Press();
+
+            uutTimerButton.Press();
+            uutStartCancelButton.Press();
+            Assert.That(str.ToString().Contains("PowerTube works with 150"));
+        }
+
+        //Ext 1
         [Test]
         public void CancelButtonPress_DuringSetup_PowerTubeOff()
         {
             uutPowerButton.Press();
-            uutCancelButton.Press();
+            uutStartCancelButton.Press();
             Assert.That(str.ToString().Contains("Display cleared"));
         }
 
+        //Ext2
         [Test]
         public void CancelButtonPress_UnderCooking_ClearDisplay()
         {
             uutPowerButton.Press();
             uutTimerButton.Press();
-            uutCancelButton.Press();
+            uutStartCancelButton.Press();
 
-            uutCancelButton.Press();
+            uutStartCancelButton.Press();
             Assert.That(str.ToString().Contains("Display cleared"));
         }
     }
