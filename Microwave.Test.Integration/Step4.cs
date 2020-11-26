@@ -53,7 +53,7 @@ namespace Microwave.Test.Integration
             timer.TimeRemaining.Returns(115);
             timer.TimerTick += Raise.EventWith(this, EventArgs.Empty);
 
-            Assert.That(str.ToString().Contains("Display shows: 1:55"));
+            Assert.That(str.ToString().Contains("Display shows: 01:55"));
         }
 
         [Test]
