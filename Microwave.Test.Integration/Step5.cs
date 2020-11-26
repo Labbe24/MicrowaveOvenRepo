@@ -144,43 +144,10 @@ namespace Microwave.Test.Integration
             // Now in SetTime
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now in cooking
-
             // Open door
             door.Opened += Raise.EventWith(this, EventArgs.Empty);
 
             Assert.That(str.ToString().Contains("PowerTube turned off"));
-        }
-
-        [Test]
-        public void Cooking_DoorIsOpened_DisplayCleared()
-        {
-            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetPower
-            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetTime
-            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in cooking
-
-            // Open door
-            door.Opened += Raise.EventWith(this, EventArgs.Empty);
-
-            display.Received(1).Clear();
-        }
-
-        [Test]
-        public void Cooking_CancelButton_cookControllerCalled()
-        {
-            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetPower
-            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetTime
-            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in cooking
-
-            // Open door
-            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-
-            cookController.Received(1).Stop();
         }
     }
 }
