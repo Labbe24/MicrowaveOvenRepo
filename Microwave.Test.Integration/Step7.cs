@@ -49,14 +49,14 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void Open_1subscriber_IsNotified()
+        public void Open_1subscriber_LightTurnedOn()
         {
             uut.Open();
             Assert.That(str.ToString().Contains("Light is turned on"));
         }
 
         [Test]
-        public void Close_1subscriber_IsNotified()
+        public void Close_1subscriber_LightTurnedOff()
         {
             uut.Open();
             uut.Close();
