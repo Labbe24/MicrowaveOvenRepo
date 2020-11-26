@@ -49,22 +49,24 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void PowerButtonPress_UserInterfaceSubscribes_PowerTubeStarted()
+        public void PowerButtonPress_AtStart_PowerTubeStarted()
         {
             uutPowerButton.Press();
             Assert.That(str.ToString().Contains("Display shows: 50 W"));
         }
 
         [Test]
-        public void TimerButtonPress_UserInterfaceSubscribes_ShowTime()
+        public void TimerButtonPress_DuringSetup_ShowTime()
         {
+            uutPowerButton.Press();
             uutTimerButton.Press();
             Assert.That(str.ToString().Contains("Display shows: 01:00"));
         }
 
         [Test]
-        public void CancelButtonPress_UserInterfaceSubscribes_PowerTubeOff()
+        public void CancelButtonPress_DuringSetup_PowerTubeOff()
         {
+            uutPowerButton.Press();
             uutCancelButton.Press();
             Assert.That(str.ToString().Contains("Display cleared"));
         }
