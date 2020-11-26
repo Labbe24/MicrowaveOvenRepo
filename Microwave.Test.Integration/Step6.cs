@@ -65,7 +65,18 @@ namespace Microwave.Test.Integration
         [Test]
         public void CancelButtonPress_UserInterfaceSubscribes_PowerTubeOff()
         {
+            uutCancelButton.Press();
+            Assert.That(str.ToString().Contains("Display cleared"));
+        }
+
+        [Test]
+        public void CancelButtonPress_UnderCooking_ClearDisplay()
+        {
+            uutPowerButton.Press();
             uutTimerButton.Press();
+            uutCancelButton.Press();
+
+            uutCancelButton.Press();
             Assert.That(str.ToString().Contains("Display cleared"));
         }
     }
