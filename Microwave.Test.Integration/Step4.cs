@@ -76,10 +76,11 @@ namespace Microwave.Test.Integration
         [Test]
         public void Cooking_TimerExpired_PowerTubeOff()
         {
+            ManualResetEvent pause = new ManualResetEvent(false);
+            timer.Expired += (sender, args) => pause.Set();
             uut.StartCooking(50, 60);
-
-            timer.Expired += Raise.EventWith(this, EventArgs.Empty);
-
+            pause.WaitOne(60100);
+            
             Assert.That(str.ToString().Contains("PowerTube turned off"));
         }
 
