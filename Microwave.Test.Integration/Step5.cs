@@ -5,6 +5,7 @@ using System.Text;
 using Microwave.Classes.Boundary;
 using Microwave.Classes.Controllers;
 using Microwave.Classes.Interfaces;
+using Newtonsoft.Json.Linq;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -86,9 +87,7 @@ namespace Microwave.Test.Integration
         [Test]
         public void SetPower_CancelButton_DisplayCleared()
         {
-            // Also checks if TimeButton is subscribed
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetPower
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
             Assert.That(str.ToString().Contains("Display cleared"));
@@ -117,36 +116,30 @@ namespace Microwave.Test.Integration
             Assert.That(str.ToString().Contains("Display shows: 01:00"));
         }
 
-        [Test]
-        public void Ready_PowerAndTime_cookControllerIsCalledCorrectly()
+        [TestCase(1)]
+        [TestCase(13)]
+        public void Ready_PowerAndTime_cookControllerIsCalledCorrectly(int j)
         {
-            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetPower
-            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-
-            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty); // ERROR Frank made a mistake
+            for (int i = 0; i < j; i++)
+            {
+                powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            }
 
             timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetTime
             timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
-            // Should call with correct values
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
-            //cookController.Received(1).StartCooking(100, 120);
-            Assert.That(str.ToString().Contains("PowerTube works with 100"));
+            Assert.That(str.ToString().Contains($"PowerTube works with {50*j}"));
         }
 
         [Test]
         public void Cooking_DoorIsOpened_cookControllerCalled()
         {
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetPower
             timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in SetTime
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            // Now in cooking
-            // Open door
+
             door.Opened += Raise.EventWith(this, EventArgs.Empty);
 
             Assert.That(str.ToString().Contains("PowerTube turned off"));
