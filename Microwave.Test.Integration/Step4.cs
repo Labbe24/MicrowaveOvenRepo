@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using Microwave.Classes.Boundary;
 using Microwave.Classes.Controllers;
 using Microwave.Classes.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
+using Timer = Microwave.Classes.Boundary.Timer;
 
 namespace Microwave.Test.Integration
 {
@@ -29,7 +31,7 @@ namespace Microwave.Test.Integration
             powerTube = new PowerTube(output);
             display = new Display(output);
             userInterface = Substitute.For<IUserInterface>();
-            timer = Substitute.For<ITimer>();
+            timer = new Timer();
 
             uut = new CookController(timer, display, powerTube, userInterface);
 
@@ -46,14 +48,29 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void Cooking_TimerTick_DisplayCalled()
+        public void Cooking_TimerTicked1_DisplayCalled()
         {
+            int notifications = 0;
+            timer.TimerTick += (sender, args) => notifications++;
             uut.StartCooking(50, 60);
 
-            timer.TimeRemaining.Returns(115);
-            timer.TimerTick += Raise.EventWith(this, EventArgs.Empty);
+            while (notifications < 1)
+            { }
 
-            Assert.That(str.ToString().Contains("Display shows: 01:55"));
+            Assert.That(str.ToString().Contains("Display shows: 00:59"));
+        }
+        
+        [Test]
+        public void Cooking_TimerTicked59_DisplayCalled()
+        {
+            int notifications = 0;
+            timer.TimerTick += (sender, args) => notifications++;
+            uut.StartCooking(50, 60);
+
+            while (notifications < 59)
+            { }
+
+            Assert.That(str.ToString().Contains("Display shows: 00:01"));
         }
 
         [Test]
